@@ -43,9 +43,73 @@
                 </button>
             </div>
             <div v-else>
-                <!-- the code for the checkout page -->
-            </div>
+                <h2>Checkout</h2>
+                <p>
+                    <strong>First Name:</strong>
+                    <!-- This input field is bound to the 'firstName' in the 'order' object -->
+                    <input v-model.trim="order.firstName"/>
+                </p>
 
+                <p>
+                    <strong>Last Name:</strong>
+                    <!-- This input field is bounf to the 'lastName' in the 'order' object -->
+                     <input v-model.trim="order.lastName"/>
+                </p>
+
+                <!-- Field for user's address -->
+                <p>
+                    <strong>Address:</strong> <input v-model="order.address"/>
+                </p>
+
+                <!-- Field for user's city-->
+                <p>
+                    <strong>City:</strong> <input v-model="order.city"/>
+                </p>
+
+                <!-- Field for user's state-->
+                <p>
+                    <strong>State:</strong> 
+                    <select v-model="order.state" class="form-control">
+                        <option disabled value="">State</option>
+
+                        <!-- Using v-for to iterate through the array -->
+                        <option v-for="(state, key) in states"
+                            v-bind:value="state"> {{ key }}
+                        </option>
+                    </select>
+                </p>
+
+                <!-- Field for user's zip/postal code-->
+                <p>
+                    <strong>Zip / Postal Code:</strong> <input v-model.number="order.zip" type="number"/>
+                </p>
+
+                <!-- Creating a checkbox that the user can click to choose -->
+                <p>
+                    <input type="checkbox" id="gift" value="true" 
+                    v-model="order.gift" 
+                    v-bind:true-value="order.sendGift" 
+                    v-bind:false-value="order.dontSendGift">
+                <label for="gift">Ship as gift?</label></p>
+
+                <p><input type="radio" id="home" value="Home" v-model="order.method">
+                <label for="home">Home</label></p>
+
+                <p><input type="radio" id="business" value="Business" v-model="order.method">
+                <label for="business">Business</label></p>
+
+                <h2>Order Information</h2>
+                <p>First Name: {{ order.firstName }}</p>
+                <p>Last Name: {{ order.lastName }}</p>
+                <p>Address: {{ order.address }}</p>
+                <p>City: {{ order.city }}</p>
+                <p>Zip: {{ order.zip }}</p>
+                <p>State: {{ order.state }}</p>
+                <p>Gift?: {{ order.gift }}</p>
+                <p>Method: {{ order.method }}</p>
+
+                <button v-on:click="submitForm">Place Order</button>
+            </div>
         </main>
     </div>
     <script type="text/javascript">
@@ -55,6 +119,23 @@
                 // the key 'sitename' matches the value of 'v-text' earlier
                 sitename: 'Vue.js Pet Depot',
                 showProduct: true,
+                order:{
+                    firstName: '',
+                    lastName: '',
+                    address: '',
+                    city: '',
+                    zip: '',
+                    state: '',
+                    method: 'Home',
+                    sendGift: 'Send as a gift',
+                    dontSendGift: 'Do not send as a gift'
+                },
+                states: {
+                    AL: 'Alabama',
+                    AR: 'Arizona',
+                    CA: 'California',
+                    VN: 'Nevada'
+                },
                 product: {
                     id: 1001,
                     title: "Cat Food, 25lb bag",
@@ -71,6 +152,9 @@
                 },
                 showCheckout(){
                     this.showProduct = this.showProduct ? false : true;
+                },
+                submitForm(){
+                    alert('Order submitted!')
                 }
             },
             computed: { // the Computed Property object
